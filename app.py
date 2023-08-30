@@ -12,14 +12,15 @@ async def get_pi():
 
 @app.get("/leibniz")
 async def get_pi_leibniz(n: int = Query(default=1000)):
-    pi_estimate = 0
+    acc = 0
     sign = 1
 
     for i in range(n):
-        pi_estimate += sign / (2 * i + 1)
+        acc += sign / (2 * i + 1)
         sign *= -1
 
-    return {"pi": pi_estimate * 4}
+    pi_estimate = acc * 4
+    return {"pi": pi_estimate}
 
 
 @app.get("/monte_carlo")
@@ -34,7 +35,8 @@ async def get_pi_monte_carlo(n: int = Query(default=1000)):
         if origin_dist <= 1:
             inside_circle += 1
 
-    return {"pi": 4 * inside_circle / n}
+    pi_estimate = 4 * inside_circle / n
+    return {"pi": pi_estimate}
 
 
 if __name__ == "__main__":
